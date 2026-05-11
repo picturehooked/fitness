@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyclist Strength Programme</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d0d0d;--surface:#141414;--surface2:#1a1a1a;--border:#242424;--border2:#2e2e2e;
+  --text:#ede9e0;--text2:#999;--text3:#555;--accent:#c8f542;--blue:#60b0ff;--orange:#ff8a60;--purple:#b060ff;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+/* NAV */
+.nav{display:flex;border-bottom:1px solid var(--border);background:#0f0f0f;position:sticky;top:0;z-index:200;}
+.nav-btn{flex:1;padding:15px 6px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;background:none;border:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;}
+.nav-btn:hover{color:var(--text2);}
+.nav-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* PAGES */
+.page{display:none;padding:36px 32px 100px;max-width:980px;margin:0 auto;}
+.page.active{display:block;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:46px;letter-spacing:3px;line-height:1;margin-bottom:6px;}
+.page-title span{color:var(--accent);}
+.page-sub{font-size:12px;color:var(--text3);font-weight:300;margin-bottom:30px;}
+.section-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-weight:600;margin-bottom:12px;}
+
+/* CALIBRATION */
+.cal-intro{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:16px 20px;margin-bottom:24px;font-size:13px;color:var(--text2);line-height:1.7;font-weight:300;}
+.cal-intro strong{color:var(--accent);font-weight:600;}
+.cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.cal-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;}
+.cal-card h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:3px;}
+.ctag{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;display:block;margin-bottom:10px;}
+.s1c{color:var(--blue);}.s2c{color:var(--orange);}.s3c{color:var(--purple);}
+.rt{width:100%;border-collapse:collapse;}
+.rt th{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);font-weight:600;padding:0 8px 8px 0;text-align:left;border-bottom:1px solid var(--border);}
+.rt td{padding:8px 8px 8px 0;font-size:12px;border-bottom:1px solid #1a1a1a;vertical-align:top;}
+.rt tr:last-child td{border-bottom:none;}
+.rex{font-weight:500;color:var(--text);margin-bottom:2px;}
+.rhint{font-size:11px;color:var(--text3);font-style:italic;font-weight:300;}
+.rload{font-size:12px;font-weight:600;color:var(--accent);}
+.principles-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:24px;}
+.principles-box h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.pc{background:#111;border:1px solid var(--border);border-radius:8px;padding:12px;}
+.pc h4{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.pc p{font-size:11px;color:var(--text3);font-weight:300;line-height:1.5;}
+
+/* SCHEDULE */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:8px;}
+.dc{border-radius:7px;padding:13px 4px;text-align:center;}
+.dc .dl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+.dc .dt{font-size:12px;font-weight:600;}
+.dc .ds{font-size:10px;margin-top:3px;opacity:0.7;}
+.chip-ride{background:#162010;border:1px solid #3a6010;}.chip-ride .dt{color:#8bc34a;}
+.chip-s1{background:#0e1828;border:1px solid #1e4878;}.chip-s1 .dt{color:var(--blue);}
+.chip-s2{background:#1e1408;border:1px solid #5a3808;}.chip-s2 .dt{color:var(--orange);}
+.chip-s3{background:#160820;border:1px solid #4a1870;}.chip-s3 .dt{color:var(--purple);}
+.chip-rest{background:#111;border:1px solid #1e1e1e;}.chip-rest .dt{color:var(--text3);}
+.chip-interval{background:#101818;border:1px solid #1e3838;}.chip-interval .dt{color:#40c0c0;}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;margin-top:14px;}
+.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3);}
+.ld{width:8px;height:8px;border-radius:2px;}
+.timing-note{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:14px 18px;font-size:12px;color:var(--text2);margin-bottom:24px;line-height:1.7;font-weight:300;}
+.timing-note strong{color:var(--accent);font-weight:600;}
+.phase-bar{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.phase-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:15px 18px;}
+.phase-card h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:4px;}
+.phase-card.p1 h3{color:var(--blue);}.phase-card.p2 h3{color:var(--accent);}
+.phase-card p{font-size:12px;color:var(--text3);font-weight:300;line-height:1.5;}
+
+/* SESSION OVERVIEW */
+.sess-sel{display:flex;gap:8px;margin-bottom:20px;}
+.sbtn{flex:1;padding:12px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--text3);transition:all 0.2s;}
+.sbtn:hover{border-color:var(--text3);}
+.sbtn.as1{border-color:var(--blue);color:var(--blue);background:#0e1828;}
+.sbtn.as2{border-color:var(--orange);color:var(--orange);background:#1e1408;}
+.sbtn.as3{border-color:var(--purple);color:var(--purple);background:#160820;}
+.phase-toggle{display:flex;gap:8px;margin-bottom:18px;align-items:center;}
+.ptl{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-right:4px;}
+.ptog{padding:7px 14px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--text3);transition:all 0.15s;}
+.ptog.active{background:#1a2a0a;border-color:var(--accent);color:var(--accent);}
+.panel{display:none;}
+.panel.visible{display:block;animation:fadeUp 0.25s ease;}
+.session-hero{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:18px;}
+.sh-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.ctag2{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;display:block;margin-bottom:5px;}
+.session-hero h2{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;}
+.smeta{display:flex;gap:14px;font-size:11px;color:var(--text3);}
+.spurpose{font-size:13px;color:var(--text2);font-weight:300;line-height:1.6;}
+.start-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#0d0d0d;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:8px;padding:12px 22px;cursor:pointer;margin-top:14px;transition:all 0.15s;}
+.start-btn:hover{background:#d4ff55;transform:translateY(-1px);}
+.phase-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:12px;padding:5px 10px;border-radius:5px;display:inline-block;}
+.pl1{background:#1a2a0a;color:var(--accent);}
+.pl2{background:#2a1a00;color:#ffaa40;}
+
+/* EXERCISE TABLE */
+.xt{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.xt thead th{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);font-weight:600;padding:11px 14px;text-align:left;border-bottom:1px solid var(--border2);background:#111;}
+.xt tbody tr{border-bottom:1px solid #1c1c1c;transition:background 0.1s;}
+.xt tbody tr:hover{background:#1a1a1a;}
+.xt tbody tr:last-child{border-bottom:none;}
+.xt td{padding:12px 14px;vertical-align:top;}
+.ex-name{font-weight:500;color:var(--text);font-size:13px;margin-bottom:3px;display:flex;align-items:center;gap:8px;}
+.ex-note{font-size:11px;color:var(--text3);font-weight:300;line-height:1.5;margin-bottom:4px;}
+.ex-cue{font-size:11px;color:#888;font-style:italic;line-height:1.5;}
+.ex-equip{font-size:11px;color:var(--text2);}
+.bp1{display:inline-block;background:#1a2a0a;border:1px solid #3a5a1a;border-radius:5px;padding:3px 9px;font-size:12px;font-weight:600;color:var(--accent);white-space:nowrap;}
+.bp2{display:inline-block;background:#2a1a00;border:1px solid #5a3a10;border-radius:5px;padding:3px 9px;font-size:12px;font-weight:600;color:#ffaa40;white-space:nowrap;}
+.srow td{background:#111;padding:7px 14px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-weight:600;border-bottom:1px solid var(--border2)!important;}
+.snote{margin-top:14px;background:#111;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:12px 16px;}
+.snote h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:7px;}
+.snote li{font-size:12px;color:var(--text3);font-weight:300;line-height:1.7;padding-left:12px;position:relative;list-style:none;margin-bottom:3px;}
+.snote li::before{content:'--';position:absolute;left:0;color:var(--text3);}
+
+/* VIDEO BUTTON */
+.vbtn{display:inline-flex;align-items:center;gap:4px;background:none;border:1px solid #333;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:600;color:var(--text3);cursor:pointer;letter-spacing:0.5px;text-transform:uppercase;transition:all 0.15s;white-space:nowrap;vertical-align:middle;margin-left:4px;}
+.vbtn:hover{border-color:var(--accent);color:var(--accent);}
+.vbtn svg{width:8px;height:8px;fill:currentColor;}
+
+/* VIDEO OVERLAY */
+.voverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;align-items:center;justify-content:center;}
+.voverlay.open{display:flex;}
+.vbox{background:#111;border:1px solid #333;border-radius:12px;overflow:hidden;width:min(760px,92vw);}
+.vbox-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #222;}
+.vbox-header span{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:0.5px;}
+.vclose{background:#1a1a1a;border:1px solid #333;color:var(--text2);width:28px;height:28px;border-radius:5px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;font-family:sans-serif;}
+.vclose:hover{background:#222;color:var(--text);}
+.vbox iframe{display:block;width:100%;aspect-ratio:16/9;border:none;}
+
+/* SESSION MODE */
+.session-mode{display:none;position:fixed;inset:0;background:var(--bg);z-index:500;flex-direction:column;}
+.session-mode.open{display:flex;}
+.sm-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:#0f0f0f;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sm-header-left{display:flex;flex-direction:column;}
+.sm-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text);}
+.sm-progress-text{font-size:11px;color:var(--text3);font-weight:300;margin-top:2px;}
+.sm-exit{background:#1a1a1a;border:1px solid #333;color:var(--text2);padding:7px 14px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
+.sm-exit:hover{background:#222;color:var(--text);}
+.sm-progress-bar{height:3px;background:#1a1a1a;flex-shrink:0;}
+.sm-progress-fill{height:100%;background:var(--accent);transition:width 0.5s ease;}
+.sm-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;}
+.sm-card{width:100%;max-width:640px;}
+.sm-section-badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--text3);margin-bottom:10px;}
+.sm-ex-name{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;line-height:1;color:var(--text);margin-bottom:6px;}
+.sm-ex-name button.vbtn{font-family:'DM Sans',sans-serif;font-size:11px;vertical-align:middle;margin-left:8px;}
+.sm-sets{font-size:18px;font-weight:600;color:var(--accent);margin-bottom:16px;}
+.sm-cue{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:14px 18px;margin-bottom:16px;}
+.sm-cue-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--accent);margin-bottom:6px;}
+.sm-cue p{font-size:13px;color:var(--text2);font-weight:300;line-height:1.7;}
+.sm-equip{font-size:12px;color:var(--text3);margin-bottom:20px;}
+.sm-nav{display:flex;gap:10px;align-items:center;}
+.sm-next{flex:1;background:var(--accent);color:#0d0d0d;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:10px;padding:18px 24px;cursor:pointer;transition:all 0.15s;}
+.sm-next:hover{background:#d4ff55;}
+.sm-prev{background:#1a1a1a;border:1px solid #333;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-radius:10px;padding:18px 16px;cursor:pointer;}
+.sm-prev:hover{background:#222;}
+/* REST SCREEN */
+.sm-rest{display:none;width:100%;max-width:640px;text-align:center;}
+.sm-rest-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-weight:600;margin-bottom:10px;}
+.sm-rest-timer{font-family:'Bebas Neue',sans-serif;font-size:120px;color:var(--accent);line-height:1;margin-bottom:8px;}
+.sm-rest-next{font-size:14px;color:var(--text2);font-weight:300;margin-bottom:24px;}
+.sm-skip{background:none;border:1px solid #333;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-radius:8px;padding:10px 20px;cursor:pointer;}
+.sm-skip:hover{border-color:var(--text2);color:var(--text2);}
+/* DONE SCREEN */
+.sm-done{display:none;width:100%;max-width:640px;text-align:center;}
+.sm-done h2{font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:3px;color:var(--accent);margin-bottom:10px;}
+.sm-done p{font-size:14px;color:var(--text2);font-weight:300;line-height:1.7;margin-bottom:24px;}
+.sm-done button{background:var(--accent);color:#0d0d0d;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:8px;padding:14px 28px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPage('calibration',this)">Calibration</button>
+  <button class="nav-btn" onclick="showPage('schedule',this)">Schedule</button>
+  <button class="nav-btn" onclick="showPage('sessions',this)">Sessions</button>
+</nav>
+
+<!-- VIDEO OVERLAY -->
+<div class="voverlay" id="voverlay" onclick="closeVideo(event)">
+  <div class="vbox">
+    <div class="vbox-header">
+      <span id="vbox-title">Exercise Demo</span>
+      <button class="vclose" onclick="closeVideoBtn()">&#x2715;</button>
+    </div>
+    <iframe id="vframe" src="" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- SESSION MODE OVERLAY -->
+<div class="session-mode" id="session-mode">
+  <div class="sm-header">
+    <div class="sm-header-left">
+      <div class="sm-title" id="sm-session-title">SESSION</div>
+      <div class="sm-progress-text" id="sm-progress-text">Exercise 1 of 8</div>
+    </div>
+    <button class="sm-exit" onclick="exitSessionMode()">&#x2715; Exit</button>
+  </div>
+  <div class="sm-progress-bar"><div class="sm-progress-fill" id="sm-progress-fill" style="width:0%"></div></div>
+  <div class="sm-body">
+    <!-- Exercise card -->
+    <div class="sm-card" id="sm-ex-card">
+      <div class="sm-section-badge" id="sm-section"></div>
+      <div class="sm-ex-name" id="sm-exname"></div>
+      <div class="sm-sets" id="sm-sets"></div>
+      <div class="sm-cue"><div class="sm-cue-label">Form Cue</div><p id="sm-cue"></p></div>
+      <div class="sm-equip" id="sm-equip"></div>
+      <div class="sm-nav">
+        <button class="sm-prev" id="sm-prev-btn" onclick="smPrev()">&#8592; Back</button>
+        <button class="sm-next" id="sm-next-btn" onclick="smNext()">Next Exercise &#8594;</button>
+      </div>
+    </div>
+    <!-- Rest card -->
+    <div class="sm-rest" id="sm-rest-card">
+      <div class="sm-rest-label">Rest</div>
+      <div class="sm-rest-timer" id="sm-rest-timer">60</div>
+      <div class="sm-rest-next">Next: <strong id="sm-rest-next-name"></strong></div>
+      <button class="sm-skip" onclick="skipRest()">Skip Rest</button>
+    </div>
+    <!-- Done card -->
+    <div class="sm-done" id="sm-done-card">
+      <h2>Session Complete</h2>
+      <p>Well done. Note down your weights while they're fresh, then take at least 5 minutes before your next activity.</p>
+      <button onclick="exitSessionMode()">Back to Programme</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 1: CALIBRATION ═══ -->
+<div id="page-calibration" class="page active">
+  <div class="page-title">CALIBRATION <span>GUIDE</span></div>
+  <div class="page-sub">Complete these tests in Week 1 before committing to working loads</div>
+
+  <div class="cal-intro"><strong>How to use this page:</strong> For each key loaded exercise, perform the test sets below. Find a weight you can lift with clean form for the stated reps, leaving roughly 2 reps in reserve. That number is your <strong>Phase 1 starting load</strong>. Log it. You will build on it systematically in Phase 2.</div>
+
+  <div class="section-label">Key Loaded Exercises</div>
+  <div class="cal-grid">
+    <div class="cal-card">
+      <h3>Session 2 -- Upper Body</h3>
+      <span class="ctag s2c">Thursday</span>
+      <table class="rt">
+        <thead><tr><th>Exercise</th><th>Test</th><th>Target Feel</th></tr></thead>
+        <tbody>
+          <tr><td><div class="rex">Dumbbell row</div><div class="rhint">Each arm</div></td><td><span class="rload">3 reps, moderate</span></td><td style="font-size:11px;color:var(--text3);">Heavy but controlled. Could do 5, not 8.</td></tr>
+          <tr><td><div class="rex">Dumbbell floor press</div></td><td><span class="rload">5 reps, moderate</span></td><td style="font-size:11px;color:var(--text3);">Rep 5 is genuine effort. Form holds.</td></tr>
+          <tr><td><div class="rex">Overhead press</div><div class="rhint">Seated dumbbell</div></td><td><span class="rload">5 reps, moderate</span></td><td style="font-size:11px;color:var(--text3);">No lower back arch. Controlled descent.</td></tr>
+          <tr><td><div class="rex">Band pull-apart</div></td><td><span class="rload">15 reps</span></td><td style="font-size:11px;color:var(--text3);">Fatigue at rep 12-13. Shoulders not shrugging.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cal-card">
+      <h3>Session 3 -- Lower Body</h3>
+      <span class="ctag s3c">Sunday</span>
+      <table class="rt">
+        <thead><tr><th>Exercise</th><th>Test</th><th>Target Feel</th></tr></thead>
+        <tbody>
+          <tr><td><div class="rex">Kettlebell deadlift</div></td><td><span class="rload">5 reps, light-mod</span></td><td style="font-size:11px;color:var(--text3);">Perfect hinge. Glutes fire at top. No rounding.</td></tr>
+          <tr><td><div class="rex">Goblet squat</div><div class="rhint">Kettlebell</div></td><td><span class="rload">8 reps, moderate</span></td><td style="font-size:11px;color:var(--text3);">Chest up, depth comfortable. No knee cave.</td></tr>
+          <tr><td><div class="rex">Romanian deadlift</div><div class="rhint">Barbell</div></td><td><span class="rload">Bar only (17.5kg)</span></td><td style="font-size:11px;color:var(--text3);">Groove the hinge. Add load only when form is clean.</td></tr>
+          <tr><td><div class="rex">Single-leg deadlift</div><div class="rhint">Bodyweight first</div></td><td><span class="rload">5 reps each side</span></td><td style="font-size:11px;color:var(--text3);">Balance is the limiter. That is correct at this stage.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="principles-box">
+    <h3>Loading Principles -- Both Phases</h3>
+    <div class="pg">
+      <div class="pc"><h4>2 Reps in Reserve</h4><p>Every set should finish with 2 reps still available. Failure means the weight is too heavy. 4+ easy means increase it.</p></div>
+      <div class="pc"><h4>Form Before Load</h4><p>Particularly on hip hinges. A rounded lower back under load is exactly the injury you are trying to prevent.</p></div>
+      <div class="pc"><h4>Progressive Overload</h4><p>In Phase 2, add the smallest available increment when you hit the top of the rep range cleanly across all sets for two sessions running.</p></div>
+      <div class="pc"><h4>Rest Periods</h4><p>Phase 1: 60-90 seconds between sets. Phase 2: 45-60 seconds. Shorter rest is part of the progression.</p></div>
+      <div class="pc"><h4>Session 1 (Mobility)</h4><p>Bodyweight and bands only. No calibration needed. The measure is range of motion and control, not load.</p></div>
+      <div class="pc"><h4>Logging</h4><p>Write weight and reps for every loaded set. You cannot progress without a record. A notes app is enough.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 2: SCHEDULE ═══ -->
+<div id="page-schedule" class="page">
+  <div class="page-title">WEEKLY <span>SCHEDULE</span></div>
+  <div class="page-sub">Built around Tuesday (2.5 hr) and Saturday (4 hr) rides</div>
+  <div class="section-label">Typical Week</div>
+  <div class="week-grid">
+    <div class="dc chip-rest"><div class="dl">Mon</div><div class="dt">Rest</div></div>
+    <div class="dc chip-ride"><div class="dl">Tue</div><div class="dt">Ride</div><div class="ds">2.5 hrs AM</div></div>
+    <div class="dc chip-s1"><div class="dl">Tue</div><div class="dt">S1</div><div class="ds">Mobility PM</div></div>
+    <div class="dc chip-interval"><div class="dl">Wed</div><div class="dt">Intervals</div><div class="ds">Indoor</div></div>
+    <div class="dc chip-s2"><div class="dl">Thu</div><div class="dt">S2</div><div class="ds">Upper Body</div></div>
+    <div class="dc chip-interval"><div class="dl">Fri</div><div class="dt">Intervals</div><div class="ds">Indoor</div></div>
+    <div class="dc chip-ride"><div class="dl">Sat</div><div class="dt">Ride</div><div class="ds">4 hrs AM</div></div>
+  </div>
+  <div class="week-grid" style="margin-top:5px;">
+    <div class="dc chip-s3"><div class="dl">Sun</div><div class="dt">S3</div><div class="ds">Lower Body</div></div>
+    <div style="grid-column:2/8;display:flex;align-items:center;justify-content:center;background:#111;border:1px solid #1e1e1e;border-radius:7px;"><span style="font-size:11px;color:var(--text3);">Repeat weekly</span></div>
+  </div>
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:#3a6010;"></div>Cycling</div>
+    <div class="li"><div class="ld" style="background:var(--blue);"></div>S1: Mobility</div>
+    <div class="li"><div class="ld" style="background:var(--orange);"></div>S2: Upper Body</div>
+    <div class="li"><div class="ld" style="background:var(--purple);"></div>S3: Lower Body</div>
+    <div class="li"><div class="ld" style="background:#40c0c0;"></div>Intervals</div>
+    <div class="li"><div class="ld" style="background:#1e1e1e;"></div>Rest</div>
+  </div>
+  <div class="timing-note">
+    <strong>Tuesday:</strong> Session 1 post-ride replaces the post-ride stretching you currently skip. Tissue is warm -- optimal window.<br><br>
+    <strong>Saturday:</strong> No home session after 4 hours on the bike. Rest fully in the afternoon.<br><br>
+    <strong>Sunday:</strong> 24 hours off Saturday's ride. Session 3 here keeps loaded lower body work away from fresh cycling legs mid-week.<br><br>
+    <strong>Thursday:</strong> Upper body dominant -- no conflict with Wednesday or Friday intervals.
+  </div>
+  <div class="phase-bar">
+    <div class="phase-card p1"><h3>Phase 1 -- Weeks 1 to 4</h3><p>Foundation. Pattern first, load second. Establish movement quality and baseline numbers across all three sessions before adding meaningful weight.</p></div>
+    <div class="phase-card p2"><h3>Phase 2 -- Weeks 5 to 8</h3><p>Progressive overload. Same framework, increased load and volume. Rest periods tighten, selected exercises advance. This is where adaptation and visible change occur.</p></div>
+  </div>
+</div>
+
+<!-- ═══ PAGE 3: SESSIONS ═══ -->
+<div id="page-sessions" class="page">
+  <div class="page-title">THE <span>SESSIONS</span></div>
+  <div class="page-sub">Select session and phase -- then hit Start to enter guided mode</div>
+
+  <div class="sess-sel">
+    <button class="sbtn as1" id="sbtn1" onclick="showSess(1)">S1 -- Mobility</button>
+    <button class="sbtn" id="sbtn2" onclick="showSess(2)">S2 -- Upper Body</button>
+    <button class="sbtn" id="sbtn3" onclick="showSess(3)">S3 -- Lower Body</button>
+  </div>
+  <div class="phase-toggle">
+    <span class="ptl">Phase:</span>
+    <button class="ptog active" id="pt1" onclick="setPhase(1)">1 -- Foundation (Wks 1-4)</button>
+    <button class="ptog" id="pt2" onclick="setPhase(2)">2 -- Overload (Wks 5-8)</button>
+  </div>
+
+  <!-- SESSION 1 -->
+  <div id="panel-1" class="panel visible">
+    <div class="session-hero">
+      <div class="sh-top">
+        <div><span class="ctag2 s1c">Session 1 -- Tuesday PM (post-ride)</span><h2>MOBILITY &amp; ACTIVATION</h2></div>
+        <div class="smeta"><span>30 min</span><span>Bodyweight + bands</span></div>
+      </div>
+      <p class="spurpose">Targets the three cycling failure modes: stiff thoracic spine, locked hip flexors, and inhibited glutes. Done immediately post-ride while tissue is warm. Replaces post-ride stretching. Movement quality is the only measure -- no load required.</p>
+      <button class="start-btn" onclick="startSession(1)">&#9654; Start Session</button>
+    </div>
+    <div class="phase-label pl1">Same exercises both phases -- progression is range of motion, not load</div>
+    <table class="xt">
+      <thead><tr><th style="width:36%">Exercise</th><th style="width:22%">Equipment</th><th>Sets / Reps</th></tr></thead>
+      <tbody>
+        <tr class="srow"><td colspan="3">Thoracic Spine</td></tr>
+        <tr><td><div class="ex-name">Thoracic rotation <button class="vbtn" onclick="openVideo('oUAqkO73V_c','10','Thoracic Rotation')">&#9654; Watch</button></div><div class="ex-note">Kneeling or seated, hands behind head. Rotate upper back only -- hips stay square. Pause at end range.</div><div class="ex-cue">Cue: imagine your upper back is a wrung towel. The lumbar spine does not move.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 10 each side</span></td></tr>
+        <tr><td><div class="ex-name">Cat-cow with thoracic extension <button class="vbtn" onclick="openVideo('2tFpdTfIbKw','5','Cat-Cow Thoracic')">&#9654; Watch</button></div><div class="ex-note">On all fours. Cycle between rounding and extending. On the extension phase, pause 2 seconds and breathe into the upper back.</div><div class="ex-cue">Cue: in extension, think about opening your chest to the ceiling. Slow is more effective than fast.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 8 slow</span></td></tr>
+        <tr class="srow"><td colspan="3">Hip Flexors</td></tr>
+        <tr><td><div class="ex-name">90/90 hip stretch <button class="vbtn" onclick="openVideo('t4Zz6-aG8Iw','15','90/90 Hip Stretch')">&#9654; Watch</button></div><div class="ex-note">Both legs at 90 degrees on the floor. Hinge forward over the front shin. Hold -- do not pulse. The deepest hip flexors only release under sustained hold.</div><div class="ex-cue">Cue: sit tall first, then hinge. If your pelvis tips back as you lean, sit on a folded towel to raise the hips.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 45 sec each side</span></td></tr>
+        <tr><td><div class="ex-name">Kneeling hip flexor with overhead reach <button class="vbtn" onclick="openVideo('KyoK4Rf6_bE','8','Kneeling Hip Flexor Reach')">&#9654; Watch</button></div><div class="ex-note">Back knee down on the floor, front foot flat. Drive the hip forward. Reach the same-side arm overhead and lean slightly away.</div><div class="ex-cue">Cue: squeeze the glute of the kneeling leg throughout. If you lose that squeeze, you lose the stretch.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 40 sec each side</span></td></tr>
+        <tr class="srow"><td colspan="3">Glute Activation</td></tr>
+        <tr><td><div class="ex-name">Glute bridge with band <button class="vbtn" onclick="openVideo('91uayvdKAQY','10','Banded Glute Bridge')">&#9654; Watch</button></div><div class="ex-note">Band above knees. Lie on back, feet flat. Push into the band as you lift -- the lateral tension is the point. Hold 2 seconds at the top.</div><div class="ex-cue">Cue: do not let the knees cave inward. If they do, the band is too strong. Drive knees out against it throughout.</div></td><td class="ex-equip">Band</td><td><span class="bp1">3 x 12</span></td></tr>
+        <tr><td><div class="ex-name">Clamshell <button class="vbtn" onclick="openVideo('6xDr8LvURMc','12','Clamshell with Band')">&#9654; Watch</button></div><div class="ex-note">Band above knees. Side-lying, knees bent at 90 degrees. Rotate the top knee toward the ceiling. Pelvis stays completely still.</div><div class="ex-cue">Cue: place your top hand on your hip. If you feel the pelvis rolling back, you are using the wrong muscles -- reduce the range.</div></td><td class="ex-equip">Band</td><td><span class="bp1">2 x 15 each side</span></td></tr>
+        <tr class="srow"><td colspan="3">Flow and Finish</td></tr>
+        <tr><td><div class="ex-name">World's greatest stretch <button class="vbtn" onclick="openVideo('-CiWQ2IvY34','5','World\'s Greatest Stretch')">&#9654; Watch</button></div><div class="ex-note">Lunge position, same-side elbow to the floor, then rotate that arm to the ceiling. One movement, many targets. Do it slowly.</div><div class="ex-cue">Cue: the elbow-to-floor position is the anchor. From there, the rotation should feel like opening a door with your chest, not just reaching your arm up.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 5 each side</span></td></tr>
+        <tr><td><div class="ex-name">Child's pose to downward dog</div><div class="ex-note">Flow slowly between the two positions. Breathe into areas of restriction. This is the deliberate wind-down -- do not rush it.</div><div class="ex-cue">Cue: in downward dog, press the floor away and try to lengthen the spine rather than just pushing the hips up.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 6 transitions</span></td></tr>
+      </tbody>
+    </table>
+    <div class="snote"><h4>Notes</h4><ul>
+      <li>This session does not change between phases. The progression is increased range of motion and reduced compensation -- not load.</li>
+      <li>Done within 30 minutes of finishing a ride, the hip flexor work in particular will feel significantly more effective than cold stretching.</li>
+    </ul></div>
+  </div>
+
+  <!-- SESSION 2 -->
+  <div id="panel-2" class="panel">
+    <div class="session-hero">
+      <div class="sh-top">
+        <div><span class="ctag2 s2c">Session 2 -- Thursday</span><h2>UPPER BODY &amp; CORE</h2></div>
+        <div class="smeta"><span>35 min</span><span>Dumbbells + bands</span></div>
+      </div>
+      <p class="spurpose">Loads the pulling and rotational patterns cycling never touches. Pull volume deliberately exceeds push at a 2:1 ratio -- the correct response to cycling's anteriorly dominant position. Trains the core to resist load rather than flex under it.</p>
+      <button class="start-btn" onclick="startSession(2)">&#9654; Start Session</button>
+    </div>
+
+    <div id="s2p1" class="phase-content">
+      <div class="phase-label pl1">Phase 1 -- Weeks 1 to 4 -- Foundation</div>
+      <table class="xt">
+        <thead><tr><th style="width:36%">Exercise</th><th style="width:22%">Equipment</th><th>Sets / Reps</th></tr></thead>
+        <tbody>
+          <tr class="srow"><td colspan="3">Warm-Up</td></tr>
+          <tr><td><div class="ex-name">Band pull-apart <button class="vbtn" onclick="openVideo('_nwzN8RhIWY','5','Band Pull-Apart')">&#9654; Watch</button></div><div class="ex-note">Arms straight at chest height. Pull band apart until it reaches your sternum. Squeeze shoulder blades at the back.</div><div class="ex-cue">Cue: keep the arms straight throughout. Bent elbows turn this into a bicep exercise, not a shoulder blade one.</div></td><td class="ex-equip">Band</td><td><span class="bp1">2 x 15</span></td></tr>
+          <tr><td><div class="ex-name">Arm circles and shoulder rolls</div><div class="ex-note">Large slow circles forward and backward. Follow with shoulder rolls. Unloaded preparation of the shoulder joint.</div><div class="ex-cue">Cue: make the circles as large as comfortable. Small circles achieve almost nothing here.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">1 x 60 sec</span></td></tr>
+          <tr class="srow"><td colspan="3">Pull -- Priority Movement</td></tr>
+          <tr><td><div class="ex-name">Dumbbell single-arm row <button class="vbtn" onclick="openVideo('gfUg6qWohTk','20','Single-Arm Dumbbell Row')">&#9654; Watch</button></div><div class="ex-note">Brace on bench or knee with opposite hand. Pull elbow to hip -- not to shoulder. The elbow drives the movement, not the hand.</div><div class="ex-cue">Cue: at the top of the row, hold for 1 second and feel the shoulder blade move toward the spine. That contraction is the point of the exercise.</div></td><td class="ex-equip">Dumbbell</td><td><span class="bp1">3 x 8 each arm</span></td></tr>
+          <tr><td><div class="ex-name">Band face pull <button class="vbtn" onclick="openVideo('IndIttUTNMU','15','Band Face Pull')">&#9654; Watch</button></div><div class="ex-note">Band at face height. Pull to forehead with elbows high and wide. Externally rotate the shoulder at the end position.</div><div class="ex-cue">Cue: elbows must be at or above shoulder height throughout. Dropping the elbows turns this into a row, not a face pull.</div></td><td class="ex-equip">Band</td><td><span class="bp1">3 x 12</span></td></tr>
+          <tr class="srow"><td colspan="3">Push -- Counterbalance</td></tr>
+          <tr><td><div class="ex-name">Dumbbell floor press <button class="vbtn" onclick="openVideo('Bx4QPVH-J1g','25','Dumbbell Floor Press')">&#9654; Watch</button></div><div class="ex-note">Lie on floor, elbows at 45 degrees from the body. Press up until arms are extended. Lower until upper arms touch the floor.</div><div class="ex-cue">Cue: do not let the elbows flare to 90 degrees -- that loads the shoulder joint, not the chest. 45 degrees is the correct angle.</div></td><td class="ex-equip">Dumbbells</td><td><span class="bp1">3 x 10</span></td></tr>
+          <tr><td><div class="ex-name">Seated dumbbell overhead press <button class="vbtn" onclick="openVideo('s_aK83TWYkA','20','Seated Overhead Press')">&#9654; Watch</button></div><div class="ex-note">Seated upright. Start with dumbbells at shoulder height, press to lockout overhead. Control the descent fully.</div><div class="ex-cue">Cue: brace your core before every rep. Do not arch the lower back to complete the press -- if you need to arch, the weight is too heavy.</div></td><td class="ex-equip">Dumbbells</td><td><span class="bp1">2 x 10</span></td></tr>
+          <tr class="srow"><td colspan="3">Core -- Anti-Rotation</td></tr>
+          <tr><td><div class="ex-name">Dead bug <button class="vbtn" onclick="openVideo('nha5Hz5_SOs','10','Dead Bug')">&#9654; Watch</button></div><div class="ex-note">Lie on back. Arms pointing to ceiling, knees at 90 degrees. Slowly extend opposite arm and leg toward the floor. Lower back must stay pressed down throughout.</div><div class="ex-cue">Cue: if your lower back lifts off the floor at any point, the movement is too large. Reduce the range until you can maintain contact.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">3 x 8 each side</span></td></tr>
+          <tr><td><div class="ex-name">Forearm plank</div><div class="ex-note">Forearms on floor, body in a straight line from head to heel. Squeeze glutes and brace core simultaneously.</div><div class="ex-cue">Cue: squeezing the glutes is not optional -- it is half the exercise. A plank without glute engagement is mostly lower back endurance, which is not what we are training here.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">3 x 30 sec</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="s2p2" class="phase-content" style="display:none;">
+      <div class="phase-label pl2">Phase 2 -- Weeks 5 to 8 -- Progressive Overload</div>
+      <table class="xt">
+        <thead><tr><th style="width:36%">Exercise</th><th style="width:22%">Equipment</th><th>Sets / Reps</th></tr></thead>
+        <tbody>
+          <tr class="srow"><td colspan="3">Warm-Up</td></tr>
+          <tr><td><div class="ex-name">Band pull-apart <button class="vbtn" onclick="openVideo('_nwzN8RhIWY','5','Band Pull-Apart')">&#9654; Watch</button></div><div class="ex-note">Heavier band or double up. 3 sets now rather than 2.</div><div class="ex-cue">Cue: same as Phase 1 -- straight arms, shoulder blades moving.</div></td><td class="ex-equip">Band (heavier)</td><td><span class="bp2">3 x 15</span></td></tr>
+          <tr class="srow"><td colspan="3">Pull -- Increased Load</td></tr>
+          <tr><td><div class="ex-name">Dumbbell single-arm row <button class="vbtn" onclick="openVideo('gfUg6qWohTk','20','Single-Arm Dumbbell Row')">&#9654; Watch</button></div><div class="ex-note">Heavier than Phase 1. 6-rep target means genuine effort on every set. Rest only 45 seconds between sets.</div><div class="ex-cue">Cue: same 1-second hold at the top. Heavier weight, shorter rest.</div></td><td class="ex-equip">Dumbbell (heavier)</td><td><span class="bp2">4 x 6 each arm</span></td></tr>
+          <tr><td><div class="ex-name">Band face pull <button class="vbtn" onclick="openVideo('IndIttUTNMU','15','Band Face Pull')">&#9654; Watch</button></div><div class="ex-note">Heavier band tension. Maintain form over load -- the shoulder external rotation is the priority.</div><div class="ex-cue">Cue: elbows high, hold the end position for 1 second.</div></td><td class="ex-equip">Band (heavier)</td><td><span class="bp2">3 x 15</span></td></tr>
+          <tr><td><div class="ex-name">Renegade row <button class="vbtn" onclick="openVideo('zeJYr6Ttyyo','10','Renegade Row')">&#9654; Watch</button></div><div class="ex-note">Plank on two dumbbells. Row one at a time. The challenge is keeping the hips square -- that is the core work. Phase 2 addition only.</div><div class="ex-cue">Cue: before each row, brace hard and imagine someone is about to push your hip sideways. Resist that imaginary force as you pull.</div></td><td class="ex-equip">Dumbbells</td><td><span class="bp2">3 x 6 each arm</span></td></tr>
+          <tr class="srow"><td colspan="3">Push -- Progressed</td></tr>
+          <tr><td><div class="ex-name">Dumbbell floor press <button class="vbtn" onclick="openVideo('Bx4QPVH-J1g','25','Dumbbell Floor Press')">&#9654; Watch</button></div><div class="ex-note">Heavier than Phase 1. Same form, more load.</div><div class="ex-cue">Cue: 45-degree elbow angle. No flaring.</div></td><td class="ex-equip">Dumbbells (heavier)</td><td><span class="bp2">3 x 8</span></td></tr>
+          <tr><td><div class="ex-name">Standing dumbbell overhead press <button class="vbtn" onclick="openVideo('s_aK83TWYkA','20','Overhead Press')">&#9654; Watch</button></div><div class="ex-note">Standing now -- adds a significant core stability demand. Brace fully before initiating every single rep.</div><div class="ex-cue">Cue: stand with feet hip-width. Before pressing, take a breath into your belly and brace as if you are about to take a punch. Press from that position.</div></td><td class="ex-equip">Dumbbells</td><td><span class="bp2">3 x 8</span></td></tr>
+          <tr class="srow"><td colspan="3">Core -- Progressed</td></tr>
+          <tr><td><div class="ex-name">Dead bug with dumbbell <button class="vbtn" onclick="openVideo('nha5Hz5_SOs','10','Dead Bug')">&#9654; Watch</button></div><div class="ex-note">Hold a light dumbbell in the extending arm. Significantly increases the anti-extension demand. Start lighter than you expect to need.</div><div class="ex-cue">Cue: same lower back rule as Phase 1. The dumbbell adds demand -- if your back lifts, drop the weight.</div></td><td class="ex-equip">Light dumbbell</td><td><span class="bp2">3 x 8 each side</span></td></tr>
+          <tr><td><div class="ex-name">Side plank</div><div class="ex-note">Forearm on floor, body in a straight line sideways. Hips stay lifted. Replaces standard plank -- lateral core loading that cycling does nothing to develop.</div><div class="ex-cue">Cue: most people let the hips sag or rotate forward. Stack them directly above each other and keep the top hip driving toward the ceiling.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp2">3 x 35 sec each side</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="snote"><h4>Notes</h4><ul>
+      <li>Pull volume exceeds push at roughly 2:1. This is intentional -- it directly addresses cycling's anterior dominance and rounded-shoulder position.</li>
+      <li>Rest 60-90 seconds in Phase 1, 45-60 in Phase 2. The shorter rest is part of the overload stimulus -- not an efficiency measure.</li>
+    </ul></div>
+  </div>
+
+  <!-- SESSION 3 -->
+  <div id="panel-3" class="panel">
+    <div class="session-hero">
+      <div class="sh-top">
+        <div><span class="ctag2 s3c">Session 3 -- Sunday</span><h2>LOWER BODY &amp; POSTERIOR CHAIN</h2></div>
+        <div class="smeta"><span>35 min</span><span>Kettlebells + barbell</span></div>
+      </div>
+      <p class="spurpose">Hip hinge, single-leg strength, and glute loading. Corrects the quad-dominant cycling pattern, removes compressive load from the lower back, and transfers directly to power on the bike. Placed on Sunday for 24 hours of recovery from the Saturday ride.</p>
+      <button class="start-btn" onclick="startSession(3)">&#9654; Start Session</button>
+    </div>
+
+    <div id="s3p1" class="phase-content">
+      <div class="phase-label pl1">Phase 1 -- Weeks 1 to 4 -- Foundation</div>
+      <table class="xt">
+        <thead><tr><th style="width:36%">Exercise</th><th style="width:22%">Equipment</th><th>Sets / Reps</th></tr></thead>
+        <tbody>
+          <tr class="srow"><td colspan="3">Warm-Up</td></tr>
+          <tr><td><div class="ex-name">Glute bridge (bodyweight) <button class="vbtn" onclick="openVideo('91uayvdKAQY','10','Glute Bridge')">&#9654; Watch</button></div><div class="ex-note">Lie on back, feet flat. Push hips to ceiling, squeeze glutes at top, hold 2 seconds. Pre-activates glutes before loading them.</div><div class="ex-cue">Cue: do not skip this. Cold glutes under a loaded deadlift means the lower back compensates. 2 minutes here prevents the problem.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 12</span></td></tr>
+          <tr><td><div class="ex-name">Standing hip circles</div><div class="ex-note">Stand on one foot. Draw large slow circles with the raised knee. Forward and backward. Mobilises the hip joint before loading.</div><div class="ex-cue">Cue: make the circles as large as balance allows. The range is the point.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">1 x 10 each side</span></td></tr>
+          <tr class="srow"><td colspan="3">Hip Hinge -- Priority Pattern</td></tr>
+          <tr><td><div class="ex-name">Kettlebell deadlift <button class="vbtn" onclick="openVideo('Uc5rP5xs7qQ','8','Kettlebell Deadlift')">&#9654; Watch</button></div><div class="ex-note">One or two kettlebells between feet. Push the floor away rather than pulling the weight up. Glutes drive the lockout at the top -- do not hyperextend the back.</div><div class="ex-cue">Cue: at setup, think "proud chest, hips back." If the lower back rounds at any point, the weight is too heavy or the hinge pattern needs more work.</div></td><td class="ex-equip">Kettlebells</td><td><span class="bp1">4 x 6</span></td></tr>
+          <tr><td><div class="ex-name">Romanian deadlift (barbell) <button class="vbtn" onclick="openVideo('2aEwT1G9xrs','15','Romanian Deadlift')">&#9654; Watch</button></div><div class="ex-note">Bar only (17.5kg) in Phase 1. Hinge from the hips with soft knees. Push the hips back until you feel the hamstrings load. Return by driving the hips forward.</div><div class="ex-cue">Cue: let the bar stay close to the legs throughout -- it should almost brush the shins and thighs on the way down. If it swings away from you, you have lost the hinge.</div></td><td class="ex-equip">Barbell (17.5kg)</td><td><span class="bp1">3 x 8</span></td></tr>
+          <tr class="srow"><td colspan="3">Single-Leg -- Cycling Transfer</td></tr>
+          <tr><td><div class="ex-name">Reverse lunge <button class="vbtn" onclick="openVideo('eut_zemVF6s','8','Reverse Lunge')">&#9654; Watch</button></div><div class="ex-note">Step back -- not forward. Back knee descends toward the floor, front knee stays over the front foot. Dumbbells at sides.</div><div class="ex-cue">Cue: the front shin should be close to vertical. If the front knee shoots forward over the toes, your stride is too short -- step back further.</div></td><td class="ex-equip">Dumbbells</td><td><span class="bp1">3 x 8 each leg</span></td></tr>
+          <tr><td><div class="ex-name">Single-leg deadlift (bodyweight) <button class="vbtn" onclick="openVideo('Zfr6wizR8rs','20','Single-Leg RDL')">&#9654; Watch</button></div><div class="ex-note">Stand on one leg. Hinge forward as the back leg rises behind you for counterbalance. Arms hang or extend forward. Balance is the challenge, not load.</div><div class="ex-cue">Cue: keep a soft bend in the standing knee. A locked knee makes balance harder and shortens the hamstring range. Think about your standing hip staying square to the floor.</div></td><td class="ex-equip">Bodyweight</td><td><span class="bp1">2 x 6 each side</span></td></tr>
+          <tr class="srow"><td colspan="3">Squat Pattern</td></tr>
+          <tr><td><div class="ex-name">Goblet squat <button class="vbtn" onclick="openVideo('MXD-EkHRUf0','10','Goblet Squat')">&#9654; Watch</button></div><div class="ex-note">Hold kettlebell at chest. Feet shoulder-width with slight outward toe angle. Sit between the knees -- elbows push them out at the bottom.</div><div class="ex-cue">Cue: at the bottom, your chest should stay tall and your weight should be through the whole foot. If your heels rise, you need to work on ankle mobility or widen the stance slightly.</div></td><td class="ex-equip">Kettlebell</td><td><span class="bp1">3 x 10</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="s3p2" class="phase-content" style="display:none;">
+      <div class="phase-label pl2">Phase 2 -- Weeks 5 to 8 -- Progressive Overload</div>
+      <table class="xt">
+        <thead><tr><th style="width:36%">Exercise</th><th style="width:22%">Equipment</th><th>Sets / Reps</th></tr></thead>
+        <tbody>
+          <tr class="srow"><td colspan="3">Warm-Up</td></tr>
+          <tr><td><div class="ex-name">Banded glute bridge <button class="vbtn" onclick="openVideo('91uayvdKAQY','10','Banded Glute Bridge')">&#9654; Watch</button></div><div class="ex-note">Band above knees replaces bodyweight version. Lateral tension increases glute medius activation.</div><div class="ex-cue">Cue: drive knees outward against the band as you press the hips up. Both movements simultaneously.</div></td><td class="ex-equip">Band</td><td><span class="bp2">2 x 15</span></td></tr>
+          <tr class="srow"><td colspan="3">Hip Hinge -- Loaded</td></tr>
+          <tr><td><div class="ex-name">Kettlebell deadlift <button class="vbtn" onclick="openVideo('Uc5rP5xs7qQ','8','Kettlebell Deadlift')">&#9654; Watch</button></div><div class="ex-note">Heavier than Phase 1. 5-rep target at near-maximum controllable load. Form is the ceiling -- reduce weight immediately if the hinge breaks.</div><div class="ex-cue">Cue: same proud chest cue as Phase 1. Heavier weight, 4 sets, shorter rest (45 sec).</div></td><td class="ex-equip">Kettlebells (heavier)</td><td><span class="bp2">4 x 5</span></td></tr>
+          <tr><td><div class="ex-name">Romanian deadlift (barbell) <button class="vbtn" onclick="openVideo('2aEwT1G9xrs','15','Romanian Deadlift')">&#9654; Watch</button></div><div class="ex-note">Add weight to the bar now that hinge mechanics are established. Increase by small increments only -- this movement earns load slowly.</div><div class="ex-cue">Cue: bar stays close to the legs. Hamstrings should be loaded by the time the bar reaches just below knee height.</div></td><td class="ex-equip">Barbell (added load)</td><td><span class="bp2">4 x 6</span></td></tr>
+          <tr><td><div class="ex-name">Kettlebell swing <button class="vbtn" onclick="openVideo('pA6o-a3y1Vo','20','Kettlebell Swing')">&#9654; Watch</button></div><div class="ex-note">Hip hinge under power -- not a squat. The bell is driven by the hips, not pulled by the arms. At the top, stand tall with glutes squeezed hard. Phase 2 addition only.</div><div class="ex-cue">Cue: think of the swing as a horizontal jump -- all the power comes from snapping the hips forward. The arms are just a connection to the bell, nothing more.</div></td><td class="ex-equip">Kettlebell</td><td><span class="bp2">3 x 12</span></td></tr>
+          <tr class="srow"><td colspan="3">Single-Leg -- Loaded</td></tr>
+          <tr><td><div class="ex-name">Reverse lunge <button class="vbtn" onclick="openVideo('eut_zemVF6s','8','Reverse Lunge')">&#9654; Watch</button></div><div class="ex-note">Heavier than Phase 1. Same controlled tempo -- additional load should not change the movement quality.</div><div class="ex-cue">Cue: if the front knee wobbles inward under load, lighten the weight. Knee tracking is non-negotiable.</div></td><td class="ex-equip">Dumbbells (heavier)</td><td><span class="bp2">3 x 8 each leg</span></td></tr>
+          <tr><td><div class="ex-name">Single-leg RDL with kettlebell <button class="vbtn" onclick="openVideo('CohgHMsoS2s','12','Single-Leg RDL Kettlebell')">&#9654; Watch</button></div><div class="ex-note">Hold a kettlebell in the opposite hand to the working leg. Balance from Phase 1 means load can now be added. The highest-value single-leg exercise in this programme.</div><div class="ex-cue">Cue: the kettlebell hand hangs directly below the shoulder. Think about keeping your hips square to the floor as you hinge -- the tendency is to open the hip of the raised leg.</div></td><td class="ex-equip">Kettlebell</td><td><span class="bp2">3 x 6 each side</span></td></tr>
+          <tr class="srow"><td colspan="3">Squat Pattern -- Progressed</td></tr>
+          <tr><td><div class="ex-name">Heavy goblet squat <button class="vbtn" onclick="openVideo('MXD-EkHRUf0','10','Goblet Squat')">&#9654; Watch</button></div><div class="ex-note">Heavier kettlebell. Same movement. The front squat keeps the torso upright -- better for cyclists than a back squat position.</div><div class="ex-cue">Cue: at the bottom, pause for 1 second. This eliminates the bounce reflex and forces genuine muscular effort to stand up.</div></td><td class="ex-equip">Kettlebell (heavier)</td><td><span class="bp2">4 x 8</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="snote"><h4>Notes</h4><ul>
+      <li>The barbell RDL starts at bar only regardless of how strong you feel. Two consecutive clean sessions before adding any load.</li>
+      <li>The kettlebell swing in Phase 2 is the highest-transfer exercise in this programme for cycling power. It earns a permanent place beyond Week 8.</li>
+      <li>Single-leg work outranks bilateral squats for cycling transfer. The pedal stroke is a unilateral movement. Do not sacrifice it for heavier bilateral lifts.</li>
+    </ul></div>
+  </div>
+</div>
+
+<script>
+// ── VIDEO ──
+function openVideo(id, startSec, title) {
+  document.getElementById('vbox-title').textContent = title;
+  document.getElementById('vframe').src = 'https://www.youtube.com/embed/' + id + '?start=' + startSec + '&autoplay=1&rel=0';
+  document.getElementById('voverlay').classList.add('open');
+}
+function closeVideoBtn() {
+  document.getElementById('voverlay').classList.remove('open');
+  document.getElementById('vframe').src = '';
+}
+function closeVideo(e) {
+  if (e.target === document.getElementById('voverlay')) closeVideoBtn();
+}
+
+// ── PAGES ──
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── SESSION TAB ──
+var curSess = 1, curPhase = 1;
+function showSess(n) {
+  curSess = n;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
+  document.getElementById('panel-' + n).classList.add('visible');
+  ['sbtn1','sbtn2','sbtn3'].forEach(id => document.getElementById(id).className = 'sbtn');
+  var cls = {1:'as1',2:'as2',3:'as3'};
+  document.getElementById('sbtn'+n).classList.add(cls[n]);
+  applyPhase();
+}
+function setPhase(n) {
+  curPhase = n;
+  document.getElementById('pt1').classList.toggle('active', n===1);
+  document.getElementById('pt2').classList.toggle('active', n===2);
+  applyPhase();
+}
+function applyPhase() {
+  [2,3].forEach(s => {
+    var p1 = document.getElementById('s'+s+'p'+(s===2?1:1));
+    var p2 = document.getElementById('s'+s+'p'+(s===2?2:2));
+    if(p1) p1.style.display = curPhase===1 ? 'block':'none';
+    if(p2) p2.style.display = curPhase===2 ? 'block':'none';
+  });
+}
+
+// ── SESSION DATA ──
+var sessions = {
+  1: {
+    name: 'MOBILITY & ACTIVATION',
+    restSecs: 30,
+    exercises: [
+      {section:'Thoracic Spine', name:'Thoracic rotation', sets:'2 x 10 each side', equip:'Bodyweight', cue:'Hands behind head, rotate upper back only -- hips stay square. Pause at end range. Imagine your upper back is a wrung towel; the lumbar spine does not move.', vid:'oUAqkO73V_c', vidStart:'10'},
+      {section:'Thoracic Spine', name:'Cat-cow with thoracic extension', sets:'2 x 8 slow', equip:'Bodyweight', cue:'On all fours. On the extension phase, pause 2 seconds and breathe into the upper back. Think about opening your chest to the ceiling. Slow is more effective than fast.', vid:'2tFpdTfIbKw', vidStart:'5'},
+      {section:'Hip Flexors', name:'90/90 hip stretch', sets:'2 x 45 sec each side', equip:'Bodyweight', cue:'Both legs at 90 degrees. Hinge forward over the front shin -- do not pulse. Sit tall first, then hinge. If the pelvis tips back, sit on a folded towel to raise the hips.', vid:'t4Zz6-aG8Iw', vidStart:'15'},
+      {section:'Hip Flexors', name:'Kneeling hip flexor with overhead reach', sets:'2 x 40 sec each side', equip:'Bodyweight', cue:'Back knee down. Drive the hip forward. Reach the same-side arm overhead. Squeeze the glute of the kneeling leg throughout -- if you lose that squeeze, you lose the stretch.', vid:'KyoK4Rf6_bE', vidStart:'8'},
+      {section:'Glute Activation', name:'Glute bridge with band', sets:'3 x 12', equip:'Band (above knees)', cue:'Push into the band as you lift. Hold 2 seconds at the top. Drive knees outward against the band throughout -- do not let them cave inward.', vid:'91uayvdKAQY', vidStart:'10'},
+      {section:'Glute Activation', name:'Clamshell', sets:'2 x 15 each side', equip:'Band (above knees)', cue:'Side-lying, knees bent at 90 degrees. Rotate the top knee up. Pelvis stays completely still -- place your top hand on your hip to monitor this. If you feel it rolling back, reduce the range.', vid:'6xDr8LvURMc', vidStart:'12'},
+      {section:'Flow and Finish', name:"World's greatest stretch", sets:'2 x 5 each side', equip:'Bodyweight', cue:'Lunge, elbow to floor, then rotate that arm to the ceiling. The elbow-to-floor is the anchor. From there, rotate like opening a door with your chest -- not just reaching the arm up.', vid:'-CiWQ2IvY34', vidStart:'5'},
+      {section:'Flow and Finish', name:"Child's pose to downward dog", sets:'2 x 6 slow transitions', equip:'Bodyweight', cue:'Flow slowly between the two. Breathe into areas of restriction. In downward dog, press the floor away and lengthen the spine rather than just pushing the hips up.', vid:null}
+    ]
+  },
+  2: {
+    p1: {
+      name: 'UPPER BODY & CORE',
+      restSecs: 75,
+      exercises: [
+        {section:'Warm-Up', name:'Band pull-apart', sets:'2 x 15', equip:'Band', cue:'Arms straight at chest height. Pull until band reaches your sternum. Keep arms straight throughout -- bent elbows turn this into a bicep exercise, not a shoulder blade one.', vid:'_nwzN8RhIWY', vidStart:'5'},
+        {section:'Warm-Up', name:'Arm circles and shoulder rolls', sets:'1 x 60 sec', equip:'Bodyweight', cue:'Large slow circles forward and backward. Make them as large as comfortable -- small circles achieve almost nothing here.', vid:null},
+        {section:'Pull', name:'Dumbbell single-arm row', sets:'3 x 8 each arm', equip:'Dumbbell', cue:'Elbow drives to the hip, not the shoulder. At the top, hold 1 second and feel the shoulder blade move toward the spine. That contraction is the point of the exercise.', vid:'gfUg6qWohTk', vidStart:'20'},
+        {section:'Pull', name:'Band face pull', sets:'3 x 12', equip:'Band', cue:'Band at face height. Elbows high and wide throughout -- dropping the elbows turns this into a row. Hold the end position for 1 second.', vid:'IndIttUTNMU', vidStart:'15'},
+        {section:'Push', name:'Dumbbell floor press', sets:'3 x 10', equip:'Dumbbells', cue:'Elbows at 45 degrees from the body -- not flared to 90 degrees. Lower until upper arms touch the floor. 45 degrees loads the chest; 90 degrees loads the shoulder joint.', vid:'Bx4QPVH-J1g', vidStart:'25'},
+        {section:'Push', name:'Seated dumbbell overhead press', sets:'2 x 10', equip:'Dumbbells', cue:'Brace core before every rep. Do not arch the lower back to complete the press -- if you need to arch, the weight is too heavy. Control the descent fully.', vid:'s_aK83TWYkA', vidStart:'20'},
+        {section:'Core', name:'Dead bug', sets:'3 x 8 each side', equip:'Bodyweight', cue:'Lower back pressed to floor throughout. Extend opposite arm and leg toward the floor. If your back lifts off at any point, the range is too large -- reduce it.', vid:'nha5Hz5_SOs', vidStart:'10'},
+        {section:'Core', name:'Forearm plank', sets:'3 x 30 sec', equip:'Bodyweight', cue:'Squeeze glutes and brace core simultaneously -- not just one or the other. A plank without glute engagement is mostly lower back endurance. Both together is anti-extension training.', vid:null}
+      ]
+    },
+    p2: {
+      name: 'UPPER BODY & CORE',
+      restSecs: 52,
+      exercises: [
+        {section:'Warm-Up', name:'Band pull-apart (heavier)', sets:'3 x 15', equip:'Band (heavier)', cue:'Straight arms, shoulder blades moving. Heavier band, one extra set.', vid:'_nwzN8RhIWY', vidStart:'5'},
+        {section:'Pull', name:'Dumbbell single-arm row (heavier)', sets:'4 x 6 each arm', equip:'Dumbbell (heavier)', cue:'Same 1-second hold at the top. Heavier load, 4 sets, 45-second rest. 6-rep target means genuine effort every set.', vid:'gfUg6qWohTk', vidStart:'20'},
+        {section:'Pull', name:'Band face pull (heavier)', sets:'3 x 15', equip:'Band (heavier)', cue:'Heavier tension. Elbows high. Hold end position 1 second. Maintain form over load throughout.', vid:'IndIttUTNMU', vidStart:'15'},
+        {section:'Pull', name:'Renegade row', sets:'3 x 6 each arm', equip:'Dumbbells', cue:'Plank on two dumbbells. Row one at a time. Before each row, brace hard and imagine someone is about to push your hip sideways -- resist that force as you pull. Hips stay square.', vid:'zeJYr6Ttyyo', vidStart:'10'},
+        {section:'Push', name:'Dumbbell floor press (heavier)', sets:'3 x 8', equip:'Dumbbells (heavier)', cue:'Same 45-degree elbow angle. More load. No flaring.', vid:'Bx4QPVH-J1g', vidStart:'25'},
+        {section:'Push', name:'Standing dumbbell overhead press', sets:'3 x 8', equip:'Dumbbells', cue:'Take a breath into your belly and brace as if about to take a punch. Press from that position. Do not arch the lower back -- if you need to, the weight is too heavy.', vid:'s_aK83TWYkA', vidStart:'20'},
+        {section:'Core', name:'Dead bug with dumbbell', sets:'3 x 8 each side', equip:'Light dumbbell', cue:'Same lower back rule as Phase 1. The dumbbell adds demand -- if your back lifts, drop the weight, not the standard.', vid:'nha5Hz5_SOs', vidStart:'10'},
+        {section:'Core', name:'Side plank', sets:'3 x 35 sec each side', equip:'Bodyweight', cue:'Stack hips directly above each other. Drive the top hip toward the ceiling -- most people let it sag or rotate forward. That rotation eliminates the lateral challenge.', vid:null}
+      ]
+    }
+  },
+  3: {
+    p1: {
+      name: 'LOWER BODY & POSTERIOR CHAIN',
+      restSecs: 75,
+      exercises: [
+        {section:'Warm-Up', name:'Glute bridge (bodyweight)', sets:'2 x 12', equip:'Bodyweight', cue:'Feet flat, squeeze glutes at top and hold 2 seconds. Do not skip this -- cold glutes under a loaded deadlift means the lower back compensates. 2 minutes of activation prevents that.', vid:'91uayvdKAQY', vidStart:'10'},
+        {section:'Warm-Up', name:'Standing hip circles', sets:'1 x 10 each side', equip:'Bodyweight', cue:'Stand on one foot. Draw large slow circles with the raised knee -- forward and backward. Make them as large as balance allows. The range is the point.', vid:null},
+        {section:'Hip Hinge', name:'Kettlebell deadlift', sets:'4 x 6', equip:'Kettlebells', cue:'Push the floor away rather than pulling the weight up. Glutes drive the lockout at the top. Setup cue: proud chest, hips back. If the lower back rounds, weight is too heavy or hinge needs more work.', vid:'Uc5rP5xs7qQ', vidStart:'8'},
+        {section:'Hip Hinge', name:'Romanian deadlift (barbell)', sets:'3 x 8', equip:'Barbell (17.5kg)', cue:'Push hips back until hamstrings load. Drive hips forward to return. Bar stays close to the legs -- it should almost brush the thighs on the way down. If it swings away, you have lost the hinge.', vid:'2aEwT1G9xrs', vidStart:'15'},
+        {section:'Single-Leg', name:'Reverse lunge', sets:'3 x 8 each leg', equip:'Dumbbells', cue:'Step back -- not forward. Front shin should be close to vertical. If the front knee shoots forward over the toes, step back further. Control the descent -- no collapsing.', vid:'eut_zemVF6s', vidStart:'8'},
+        {section:'Single-Leg', name:'Single-leg deadlift (bodyweight)', sets:'2 x 6 each side', equip:'Bodyweight', cue:'Soft bend in the standing knee. Hinge forward as the back leg rises. Think about keeping your standing hip square to the floor -- the tendency is to open it outward.', vid:'Zfr6wizR8rs', vidStart:'20'},
+        {section:'Squat', name:'Goblet squat', sets:'3 x 10', equip:'Kettlebell', cue:'Kettlebell at chest, elbows push knees out at the bottom. Chest stays tall. If heels rise, widen the stance or work on ankle mobility.', vid:'MXD-EkHRUf0', vidStart:'10'}
+      ]
+    },
+    p2: {
+      name: 'LOWER BODY & POSTERIOR CHAIN',
+      restSecs: 52,
+      exercises: [
+        {section:'Warm-Up', name:'Banded glute bridge', sets:'2 x 15', equip:'Band', cue:'Drive knees outward against the band as you press the hips up. Both movements simultaneously. The lateral tension is what makes this different from a standard bridge.', vid:'91uayvdKAQY', vidStart:'10'},
+        {section:'Hip Hinge', name:'Kettlebell deadlift (heavier)', sets:'4 x 5', equip:'Kettlebells (heavier)', cue:'Same proud chest, hips back cue. Heavier load, 4 sets, 45-second rest. If the hinge breaks at any point, reduce the weight immediately.', vid:'Uc5rP5xs7qQ', vidStart:'8'},
+        {section:'Hip Hinge', name:'Romanian deadlift (barbell)', sets:'4 x 6', equip:'Barbell (added load)', cue:'Same bar-close-to-legs cue. Add load in the smallest available increments. Hamstrings should be loaded by just below knee height on the way down.', vid:'2aEwT1G9xrs', vidStart:'15'},
+        {section:'Hip Hinge', name:'Kettlebell swing', sets:'3 x 12', equip:'Kettlebell', cue:'Hip hinge under power -- not a squat. Think of it as a horizontal jump. All power from snapping hips forward. Arms are just a connection to the bell. Stand tall at the top with glutes hard.', vid:'pA6o-a3y1Vo', vidStart:'20'},
+        {section:'Single-Leg', name:'Reverse lunge (heavier)', sets:'3 x 8 each leg', equip:'Dumbbells (heavier)', cue:'Same controlled tempo. If the front knee wobbles inward under load, lighten the weight. Knee tracking is non-negotiable.', vid:'eut_zemVF6s', vidStart:'8'},
+        {section:'Single-Leg', name:'Single-leg RDL with kettlebell', sets:'3 x 6 each side', equip:'Kettlebell', cue:'Kettlebell in opposite hand to working leg. Hips square to floor -- the tendency is to open the hip of the raised leg. The kettlebell hand hangs directly below the shoulder.', vid:'CohgHMsoS2s', vidStart:'12'},
+        {section:'Squat', name:'Heavy goblet squat', sets:'4 x 8', equip:'Kettlebell (heavier)', cue:'Same upright chest position. At the bottom, pause 1 second -- this eliminates the bounce reflex and forces genuine muscular effort to stand up.', vid:'MXD-EkHRUf0', vidStart:'10'}
+      ]
+    }
+  }
+};
+
+// ── SESSION MODE ──
+var smExercises = [];
+var smIdx = 0;
+var smRestTimer = null;
+var smRestSecsLeft = 0;
+
+function getExercises(sessNum) {
+  if (sessNum === 1) return sessions[1].exercises;
+  var ph = curPhase === 1 ? 'p1' : 'p2';
+  return sessions[sessNum][ph].exercises;
+}
+function getRestSecs(sessNum) {
+  if (sessNum === 1) return sessions[1].restSecs;
+  var ph = curPhase === 1 ? 'p1' : 'p2';
+  return sessions[sessNum][ph].restSecs;
+}
+function getSessName(sessNum) {
+  if (sessNum === 1) return sessions[1].name;
+  var ph = curPhase === 1 ? 'p1' : 'p2';
+  return sessions[sessNum][ph].name;
+}
+
+function startSession(n) {
+  smExercises = getExercises(n);
+  smIdx = 0;
+  document.getElementById('sm-session-title').textContent = 'S' + n + ' -- ' + getSessName(n);
+  clearInterval(smRestTimer);
+  document.getElementById('session-mode').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  showSmExercise();
+}
+
+function showSmExercise() {
+  clearInterval(smRestTimer);
+  var ex = smExercises[smIdx];
+  var total = smExercises.length;
+  document.getElementById('sm-progress-text').textContent = 'Exercise ' + (smIdx+1) + ' of ' + total;
+  document.getElementById('sm-progress-fill').style.width = ((smIdx/total)*100) + '%';
+  document.getElementById('sm-section').textContent = ex.section;
+  // Name + optional video button
+  var nameHtml = ex.name;
+  if (ex.vid) {
+    nameHtml += ' <button class="vbtn" onclick="openVideo(\'' + ex.vid + '\',\'' + ex.vidStart + '\',\'' + ex.name.replace(/'/g,"\\'") + '\')">&#9654; Watch</button>';
+  }
+  document.getElementById('sm-exname').innerHTML = nameHtml;
+  document.getElementById('sm-sets').textContent = ex.sets;
+  document.getElementById('sm-cue').textContent = ex.cue;
+  document.getElementById('sm-equip').textContent = 'Equipment: ' + ex.equip;
+  // Next btn label
+  var isLast = smIdx === smExercises.length - 1;
+  document.getElementById('sm-next-btn').textContent = isLast ? 'Finish Session' : 'Next Exercise \u2192';
+  document.getElementById('sm-prev-btn').style.display = smIdx === 0 ? 'none' : 'block';
+  // Show/hide cards
+  document.getElementById('sm-ex-card').style.display = 'block';
+  document.getElementById('sm-rest-card').style.display = 'none';
+  document.getElementById('sm-done-card').style.display = 'none';
+}
+
+function smNext() {
+  if (smIdx === smExercises.length - 1) {
+    // Done
+    document.getElementById('sm-progress-fill').style.width = '100%';
+    document.getElementById('sm-ex-card').style.display = 'none';
+    document.getElementById('sm-rest-card').style.display = 'none';
+    document.getElementById('sm-done-card').style.display = 'block';
+    return;
+  }
+  // Show rest screen
+  var nextEx = smExercises[smIdx + 1];
+  document.getElementById('sm-rest-next-name').textContent = nextEx.name;
+  var secs = getRestSecs(curSess);
+  smRestSecsLeft = secs;
+  document.getElementById('sm-rest-timer').textContent = smRestSecsLeft;
+  document.getElementById('sm-ex-card').style.display = 'none';
+  document.getElementById('sm-rest-card').style.display = 'block';
+  smRestTimer = setInterval(function() {
+    smRestSecsLeft--;
+    document.getElementById('sm-rest-timer').textContent = smRestSecsLeft;
+    if (smRestSecsLeft <= 0) {
+      skipRest();
+    }
+  }, 1000);
+}
+
+function smPrev() {
+  if (smIdx > 0) { smIdx--; showSmExercise(); }
+}
+
+function skipRest() {
+  clearInterval(smRestTimer);
+  smIdx++;
+  showSmExercise();
+}
+
+function exitSessionMode() {
+  clearInterval(smRestTimer);
+  document.getElementById('session-mode').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('vframe').src = '';
+  document.getElementById('voverlay').classList.remove('open');
+}
+</script>
+</body>
+</html>
